@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AcademicCredentials — DApp</title>
+  <style>
+    /* ── Reset & base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 32px 16px;
+    }
+
+    /* ── Layout ── */
+    .container { max-width: 860px; margin: 0 auto; }
+
+    /* ── Header ── */
+    .app-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .app-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .app-header p { color: #94a3b8; margin-top: 6px; font-size: 14px; }
+
+    /* ── Wallet bar ── */
+    .wallet-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #1e2130;
+      border: 1px solid #2d3451;
+      border-radius: 12px;
+      padding: 14px 20px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+    .wallet-bar .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: #ef4444; flex-shrink: 0;
+    }
+    .wallet-bar .dot.connected { background: #22c55e; }
+    .wallet-bar .label { color: #94a3b8; font-size: 13px; }
+    .wallet-bar .address { font-family: monospace; font-size: 13px; color: #38bdf8; }
+    .wallet-bar .network { margin-left: auto; font-size: 12px; color: #94a3b8; }
+    .connect-btn {
+      margin-left: auto;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .connect-btn:hover { background: #2563eb; }
+
+    /* ── Section titles ── */
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-bottom: 12px;
+      margin-top: 28px;
+      border-bottom: 1px solid #1e2a3a;
+      padding-bottom: 6px;
+    }
+
+    /* ── Cards grid ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 16px;
+    }
+
+    /* ── Function cards ── */
+    .fn-card {
+      background: #1e2130;
+      border-radius: 12px;
+      padding: 18px;
+      border: 1px solid #2d3451;
+      transition: border-color 0.2s;
+    }
+    .fn-card.read  { border-left: 3px solid #22c55e; }
+    .fn-card.write { border-left: 3px solid #f59e0b; }
+    .fn-card:hover { border-color: #3b82f6; }
+
+    .fn-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .fn-name { font-family: monospace; font-size: 14px; font-weight: 700; color: #e2e8f0; }
+
+    /* ── Badges ── */
+    .badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .read-badge  { background: #14532d; color: #4ade80; }
+    .write-badge { background: #451a03; color: #fbbf24; }
+
+    /* ── Inputs ── */
+    .input-row { margin-bottom: 10px; }
+    .input-row label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 4px; }
+    .type-hint { color: #475569; font-size: 11px; font-style: italic; }
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      background: #0f1117;
+      border: 1px solid #2d3451;
+      border-radius: 6px;
+      color: #e2e8f0;
+      padding: 8px 10px;
+      font-size: 13px;
+      font-family: monospace;
+      transition: border-color 0.2s;
+    }
+    input[type="text"]:focus, input[type="number"]:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+    .payable-row label { color: #fb923c; }
+    .payable-row input { border-color: #7c2d12; }
+    .payable-row input:focus { border-color: #f97316; }
+
+    /* ── Buttons ── */
+    button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 4px;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+    button:hover   { opacity: 0.88; }
+    button:active  { transform: scale(0.98); }
+    .fn-card.read button  { background: #166534; color: #bbf7d0; }
+    .fn-card.write button { background: #92400e; color: #fef3c7; }
+    .write-btn { background: #1d4ed8; color: white; }
+    .write-btn:hover { background: #1e40af; }
+
+    /* ── Outputs ── */
+    .outputs { margin-top: 12px; background: #0f1117; border-radius: 8px; padding: 10px; }
+    .output-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 0;
+      border-bottom: 1px solid #1e2130;
+    }
+    .output-row:last-child { border-bottom: none; }
+    .output-label { font-size: 12px; color: #64748b; }
+    .output-value { font-family: monospace; font-size: 13px; color: #38bdf8; }
+
+    /* ── TX result ── */
+    .tx-result {
+      margin-top: 10px;
+      font-size: 12px;
+      border-radius: 6px;
+      padding: 0;
+      word-break: break-all;
+    }
+    .tx-result.info    { background: #1e3a5f; color: #93c5fd; padding: 8px 10px; }
+    .tx-result.ok      { background: #14532d; color: #86efac; padding: 8px 10px; }
+    .tx-result.error   { background: #450a0a; color: #fca5a5; padding: 8px 10px; }
+
+    /* ── Events panel ── */
+    .events-panel {
+      background: #1e2130;
+      border: 1px solid #2d3451;
+      border-left: 3px solid #818cf8;
+      border-radius: 12px;
+      padding: 18px;
+      margin-top: 28px;
+    }
+    .events-panel h3 { font-size: 13px; font-weight: 700; color: #a5b4fc; margin-bottom: 10px; }
+    .events-panel ul { list-style: none; }
+    .events-panel li { font-family: monospace; font-size: 12px; color: #94a3b8; padding: 4px 0; border-bottom: 1px solid #1e2a3a; }
+    .events-panel li:last-child { border: none; }
+    #eventLog { max-height: 200px; overflow-y: auto; }
+    .log-entry { font-family: monospace; font-size: 12px; padding: 6px 0; border-bottom: 1px solid #1e2a3a; color: #94a3b8; }
+    .log-entry .ev-name { color: #818cf8; font-weight: 700; }
+    .log-entry .ev-block { color: #475569; font-size: 11px; margin-left: 6px; }
+
+    /* ── Mono helper ── */
+    .mono { font-family: monospace; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <div class="app-header">
+      <h1>AcademicCredentials DApp</h1>
+      <p>Auto-generated frontend &bull; Connected to Ganache &bull; Powered by Web3.js</p>
+    </div>
+
+    <!-- Wallet bar -->
+    <div class="wallet-bar">
+      <div class="dot" id="statusDot"></div>
+      <span class="label">Account:</span>
+      <span class="address" id="accountDisplay">Not connected</span>
+      <span class="network" id="networkDisplay"></span>
+      <button class="connect-btn" id="connectBtn" onclick="connectWallet()">Connect MetaMask</button>
+    </div>
+
+    <!-- ── READ FUNCTIONS ── -->
+    <div class="section-title">📖 Read Functions (no gas)</div>
+    <div class="cards-grid">
+      
+      <!-- READ: getCredential -->
+      <div class="fn-card read" id="card_getCredential">
+        <div class="fn-header">
+          <span class="fn-name">getCredential(bytes32)</span>
+          <span class="badge read-badge">view</span>
+        </div>
+        
+          <div class="input-row">
+            <label>_credentialHash <span class="type-hint">bytes32</span></label>
+            <input
+              type="text"
+              id="input_getCredential__credentialHash"
+              placeholder="0x + 64 hex chars"
+            />
+          </div>
+        <button onclick="call_getCredential()">Call getCredential()</button>
+        <div class="tx-result" id="tx_getCredential"></div>
+        <div class="outputs">
+          <div class="output-row">
+            <span class="output-label">name</span>
+            <span class="output-value mono" id="out_getCredential_0">—</span>
+          </div>
+          <div class="output-row">
+            <span class="output-label">university</span>
+            <span class="output-value mono" id="out_getCredential_1">—</span>
+          </div>
+          <div class="output-row">
+            <span class="output-label">degree</span>
+            <span class="output-value mono" id="out_getCredential_2">—</span>
+          </div>
+          <div class="output-row">
+            <span class="output-label">field</span>
+            <span class="output-value mono" id="out_getCredential_3">—</span>
+          </div>
+          <div class="output-row">
+            <span class="output-label">student</span>
+            <span class="output-value mono" id="out_getCredential_4">—</span>
+          </div>
+          <div class="output-row">
+            <span class="output-label">revoked</span>
+            <span class="output-value mono" id="out_getCredential_5">—</span>
+          </div>
+          <div class="output-row">
+            <span class="output-label">exists</span>
+            <span class="output-value mono" id="out_getCredential_6">—</span>
+          </div></div>
+      </div>
+
+      <!-- READ: verifyCredential -->
+      <div class="fn-card read" id="card_verifyCredential">
+        <div class="fn-header">
+          <span class="fn-name">verifyCredential(bytes32)</span>
+          <span class="badge read-badge">view</span>
+        </div>
+        
+          <div class="input-row">
+            <label>_credentialHash <span class="type-hint">bytes32</span></label>
+            <input
+              type="text"
+              id="input_verifyCredential__credentialHash"
+              placeholder="0x + 64 hex chars"
+            />
+          </div>
+        <button onclick="call_verifyCredential()">Call verifyCredential()</button>
+        <div class="tx-result" id="tx_verifyCredential"></div>
+        <div class="outputs">
+          <div class="output-row">
+            <span class="output-label">return_0</span>
+            <span class="output-value mono" id="out_verifyCredential_0">—</span>
+          </div></div>
+      </div>
+    </div>
+
+    <!-- ── WRITE FUNCTIONS ── -->
+    <div class="section-title">✏️ Write Functions (requires MetaMask)</div>
+    <div class="cards-grid">
+      
+      <!-- WRITE: issueCredential -->
+      <div class="fn-card write" id="card_issueCredential">
+        <div class="fn-header">
+          <span class="fn-name">issueCredential(address, string, string, string, string)</span>
+          <span class="badge write-badge">write</span>
+        </div>
+        
+          <div class="input-row">
+            <label>_student <span class="type-hint">address</span></label>
+            <input
+              type="text"
+              id="input_issueCredential__student"
+              placeholder="0x..."
+            />
+          </div>
+          <div class="input-row">
+            <label>_name <span class="type-hint">string</span></label>
+            <input
+              type="text"
+              id="input_issueCredential__name"
+              placeholder="_name"
+            />
+          </div>
+          <div class="input-row">
+            <label>_university <span class="type-hint">string</span></label>
+            <input
+              type="text"
+              id="input_issueCredential__university"
+              placeholder="_university"
+            />
+          </div>
+          <div class="input-row">
+            <label>_degree <span class="type-hint">string</span></label>
+            <input
+              type="text"
+              id="input_issueCredential__degree"
+              placeholder="_degree"
+            />
+          </div>
+          <div class="input-row">
+            <label>_field <span class="type-hint">string</span></label>
+            <input
+              type="text"
+              id="input_issueCredential__field"
+              placeholder="_field"
+            />
+          </div>
+        <button class="write-btn" onclick="send_issueCredential()">
+          ✏ Call issueCredential()
+        </button>
+        <div class="tx-result" id="tx_issueCredential"></div>
+      </div>
+
+      <!-- WRITE: revokeCredential -->
+      <div class="fn-card write" id="card_revokeCredential">
+        <div class="fn-header">
+          <span class="fn-name">revokeCredential(bytes32)</span>
+          <span class="badge write-badge">write</span>
+        </div>
+        
+          <div class="input-row">
+            <label>_credentialHash <span class="type-hint">bytes32</span></label>
+            <input
+              type="text"
+              id="input_revokeCredential__credentialHash"
+              placeholder="0x + 64 hex chars"
+            />
+          </div>
+        <button class="write-btn" onclick="send_revokeCredential()">
+          ✏ Call revokeCredential()
+        </button>
+        <div class="tx-result" id="tx_revokeCredential"></div>
+      </div>
+
+      <!-- WRITE: unrevokeCredential -->
+      <div class="fn-card write" id="card_unrevokeCredential">
+        <div class="fn-header">
+          <span class="fn-name">unrevokeCredential(bytes32)</span>
+          <span class="badge write-badge">write</span>
+        </div>
+        
+          <div class="input-row">
+            <label>_credentialHash <span class="type-hint">bytes32</span></label>
+            <input
+              type="text"
+              id="input_unrevokeCredential__credentialHash"
+              placeholder="0x + 64 hex chars"
+            />
+          </div>
+        <button class="write-btn" onclick="send_unrevokeCredential()">
+          ✏ Call unrevokeCredential()
+        </button>
+        <div class="tx-result" id="tx_unrevokeCredential"></div>
+      </div>
+    </div>
+
+    <!-- ── EVENTS ── -->
+    
+    <div class="events-panel">
+      <h3>⚡ Contract Events</h3>
+      <div id="eventLog">
+        <p style="color:#475569; font-size:12px;">No events yet. Send a transaction to see live logs.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Web3.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
