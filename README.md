@@ -1,12 +1,22 @@
 # Academic Credential Verification DApp
 
 ## 1. Project Title & Description
-**VeriCred: Academic Credential Verification DApp**
-VeriCred is a decentralized application designed to combat fraud in academic certifications. It allows universities to instantly issue tamper-proof degrees on the blockchain, gives students permanent ownership of their records, and permits employers to verify credentials in milliseconds without manual university confirmations.
-
+**HireMe: Academic Credential Verification DApp**
+HireMe is a decentralized application designed to combat fraud in academic certifications. It allows universities to issue verfiied academic credentials on the Ethereum Blockchain. Students can securely share their credentials with employers and employers can instantly verify them without manual university confirmations.
+## Features:
+Issue academic credentials on-chain
+Unique credential hash generation
+Public verification system
+Credential revocation capability
+Credential restoration (unrevoke)
+Event logging for transparency
 ## 2. Team Members
-- [Student Name] - [Student ID]
-- *(Add other team members here if necessary)*
+- Hariharan NKS - 9599319       
+- Kusha Latha Azmeera- 8884869   Frontend developer
+- Om 
+-Yushen
+## Smart Contract Architecture:
+The university deploys the contract and is responsible for issuing, revoking and restoring credentials. It contains name, university, degree, field,student wallet address, revocation status, whether the credential exists. The credentials are stored in a unique credential hash.
 
 ## 3. System Architecture
 ```mermaid
@@ -16,6 +26,9 @@ graph TD;
     B -->|Ethers.js / Web3.js| D[MetaMask];
     D -->|Transactions| E[Local Hardhat Node / Ganache];
     E --> F[AcademicCredentials Smart Contract];
+Roles:
+-**University/Admin:** The deploying address and authorized issuer of credential
+-**Students:** Credential Receiver
 ```
 - **Frontend Layer:** Built using React, Vite, and aesthetic TailwindCSS glassmorphism.
 - **Web3 Provider Layer:** MetaMask facilitates user connections and signs transactions.
@@ -23,74 +36,85 @@ graph TD;
 
 ## 4. Technologies Used
 - **Smart Contract:** Solidity (v0.8.20), Hardhat Framework
-- **Frontend Development:** React 19, Vite
-- **Web3 Integration:** Ethers.js (v6)
-- **Styling:** TailwindCSS v4, Lucide React (Icons)
-- **Testing:** Mocha, Chai
+- **Frontend Development:** React.js, Javascript
+- **Web3 Integration:** Ethers.js, MetaMask Wallet
+- **Testing:** Hardhat, Mocha, Chai
+Solidity is used to write the smart contract that manages academic credentials
+React.js builds the user interface for issuing and verifying credentials
+ethers.js connects the frontend with the blockchain
+MetaMask allows the users to interact with the contract using their wallet
+            -styles the frontend interface
 
 ## 5. Prerequisites
 - **Node.js:** v18.0 or newer
-- **MetaMask Extension:** Installed in your Chromium-based browser (Chrome, Edge, Brave).
-- **Git**
-
-## 6. Installation & Setup Instructions
-
-### 1. Hardhat Setup & Deployment
-First, install dependencies and spin up the local blockchain.
-```bash
-# Install hardhat & dependencies
+- **MetaMask Extension:** Installed in Chrome browser. Ethereum wallet used to connect the frontend to the blockchain and sign the transactions
+- **Git** to clone and manage the project repository
+- **Hardhat** Ethereum development environment used for compiling, testing and deploying smart contracts
+## 6. User Guide
+1. Clone the repository
+git clone https://github.com/username/credential-dapp.git
+cd credential-dapp
+2. Install all required packages
 npm install
-
-# In Terminal 1: Start the local hardhat node (acting like Ganache at port 7545)
-npx hardhat node --port 7545
-
-# In Terminal 2: Deploy the main contract
-npx hardhat run scripts/deploy.js --network ganache
-```
-Take note of the contract deployment address.
-
-### 2. Frontend Execution
-
-**Option A - Professor's Simple DApp:**
-```bash
-npx http-server ./simple-frontend -p 3000
-# Open http://localhost:3000
-```
-
-**Option B - Premium React VeriCred UI:**
-```bash
-cd frontend
-npm install
-npm run dev
-# Open http://localhost:5173
-```
-
-## 7. Smart Contract Functions
-`AcademicCredentials.sol`
-- `issueCredential(address, string, string, string, string) -> bytes32`: Creates a new cryptographic hash using student data & timestamps and stores it. Admin only. 
-- `verifyCredential(bytes32) -> bool`: Checks if a hash is registered and has not been revoked. Any address.
-- `revokeCredential(bytes32)`: Marks a credential logic flag as revoked. Admin only.
-- `getCredential(bytes32) -> Tuple`: Returns all structural data of the given hash.
-
-## 8. User Guide
-1. **Connect MetaMask:** Open the application and click "Connect Wallet". Ensure your MetaMask is pointing to `Localhost 1337` or your Ganache RPC.
-2. **Issue (As Admin):** Input the student wallet, name, university, degree, and field. Sign the transaction. Save the output Hash.
-3. **Verify:** Anyone can input the output Hash into the "Verify Credential" panel. It will query the blockchain and return the status (Valid or Revoked) and document metadata seamlessly.
-4. **Revoke (As Admin):** Paste the issued Hash and revoke the certificate permanently if needed.
-
-## 9. Testing Instructions
-The smart contracts undergo rigorous testing. To deploy unit tests simulating the interaction graph:
-```bash
-# In the root folder
-npx hardhat test
-```
-*At least 5 exhaustive checks ensure admins have exclusive control over issuance/revocation and standard checks validate structural integrity.*
-
-## 10. Known Issues/Limitations
-- The current implementation only supports one specific admin address set identically on deployment. Cannot add secondary administrators yet.
-- Credentials rely on the generated `bytes32` hash; there is no secondary query index (e.g. searching by Address) directly mapped within the frontend.
-
-## 11. Future Improvements
-- Implement Role-Based Access Control (RBAC) to allow multi-university interoperability.
-- Map hashes directly to student wallets so a student can auto-load a list of their owned credentials without manually tracking hashes.
-- IPFS integration for hosting actual PDF representations of the certificates.
+3. Compile smart contracts
+npx hardhat compile
+4. Start Local Blockchain
+npx hardhat node
+5. Deploy Smart Contract
+npx hardhat run scripts/deploy.js --network localhost
+6. Run the frontend
+npm start
+7. Open the application
+http://localhost:3000
+8. Connect to your MetaMask wallet to interact with the smart contract
+## 7. Smart Contract functions
+constructor()- initializes the contract and controls credential issuance and revocation
+issuecredential() - Admin only
+function issueCredential(
+    address _student,
+    string memory _name,
+    string memory _university,
+    string memory _degree,
+    string memory _field
+) public onlyAdmin returns (bytes32 credentialHash)
+Stores the credential data,generates unique hash
+getcredential()
+function getCredential(bytes32 _credentialHash) public view returns 
+Retrieves full credential information
+revokeCredential()  - Admin only
+function revokeCredential(bytes32 _credentialHash) public onlyAdmin
+Revokes a previously issued credential
+unrevokeCredential()  - Admin only
+function unrevokeCredential(bytes32 _credentialHash) public onlyAdmin
+Ensures the credential exists, revoked and restores it to active status
+verifyCredential()
+function verifyCredential(bytes32 _credentialHash) public view returns (bool)
+Verifies if a credential is valid
+## Events
+CredentialIssued
+When a credential is created
+event CredentialIssued(
+    bytes32 credentialHash,
+    address student,
+    string name,
+    string university,
+    string degree,
+    string field
+);
+CredentialRevoked
+When a credential is revoked
+event CredentialRevoked(bytes32 credentialHash);
+CredentialUnrevoked
+When a credential is restored
+event CredentialUnrevoked(bytes32 credentialHash);
+## Sample workflow
+1. University issues credential
+issueCredential(studentAddress, "Kusha", "UOWD", "BE", "Electronics")
+2. Contract returns acredential hash
+0x8b21a4e5...
+3. Employer verifies credential 
+verifyCredential(credentialHash)
+Returns: true
+4. If credential is revoked
+verifyCredential(credentialHash)
+Returns: false
