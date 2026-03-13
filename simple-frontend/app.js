@@ -4,7 +4,7 @@
 // Network  : http://127.0.0.1:7545  (Chain ID 1337)
 // ============================================================
 
-const CONTRACT_ADDRESS = '0x51EdfF756a2dafA571052F3094c1da28658269C7';
+const CONTRACT_ADDRESS = '0x44eab64A1296bf90831dCA7C1F85620b55d06c9C';
 
 const CONTRACT_ABI = [
   {
