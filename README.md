@@ -65,7 +65,9 @@ npx hardhat compile
 2. Select **New Workspace** and set Hostname to `127.0.0.1` and Port to `7545`.
 3. Set Network ID to `1337`.
 
+![Ganche Setup](<Screenshot 2026-03-13 at 2.09.35 PM.png>)
 ![Ganache Server Config](<Screenshot 2026-03-13 at 2.10.06 PM.png>)
+![10 Testing accounts](<Screenshot 2026-03-13 at 2.40.26 PM.png>)
 
 ### 3. MetaMask Integration (Dual Account Setup)
 
