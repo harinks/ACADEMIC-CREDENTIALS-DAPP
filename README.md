@@ -254,6 +254,8 @@ For the production-ready React app with premium visuals:
 2. **Configure Environment:**
    Ensure `src/contracts/config.js` points to your local Ganache contract address and Chain ID 1337.
 
+   ![Configure Environment](<Screenshot 2026-03-13 at 3.02.23 PM.png>)
+
 3. **Execution:**
 
    ```bash
