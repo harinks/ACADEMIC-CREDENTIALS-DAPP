@@ -1,11 +1,10 @@
 # HireMe: Academic Credential Verification DApp
 
-HireMe is a decentralized application designed to combat fraud in academic certifications. It allows universities to issue verified academic credentials on the Ethereum Blockchain. Students can securely share their credentials with employers, and employers can instantly verify them without manual university confirmations.
+**HireMe** is a decentralized application designed to combat fraud in academic certifications. It allows universities to issue verified academic credentials on the Ethereum Blockchain. Students can securely share their credentials with employers, and employers can instantly verify them without manual university confirmations.
 
 ---
 
-## 2. Team Members
-
+## 1. Team Members
 - **Hariharan NKS** - 9599319
 - **Kusha Latha Azmeera** - 8884869 (Frontend Developer)
 - **Om**
@@ -13,18 +12,9 @@ HireMe is a decentralized application designed to combat fraud in academic certi
 
 ---
 
-## 3. Features
+## 2. System Architecture
 
-- **On-chain Issuance:** Securely issue academic credentials.
-- **Unique Hashing:** Automatic generation of unique credential digital fingerprints.
-- **Public Verification:** Anyone can verify a credential using its unique hash.
-- **Revocation Control:** Universities can revoke invalid or fraudulent credentials.
-- **Restoration (Unrevoke):** Capability to reinstate previously revoked credentials.
-- **Event Logging:** Transparent tracking of all on-chain activities.
-
----
-
-## 4. System Architecture
+The architecture is built on three pillars: **Data Integrity**, **Identity Management**, and **Verifiable State**.
 
 ```mermaid
 graph TD;
@@ -35,66 +25,34 @@ graph TD;
     E --> F[AcademicCredentials Smart Contract];
 ```
 
-The architecture is built on three pillars: **Data Integrity**, **Identity Management**, and **Verifiable State**.
-
-### Roles
-
-- **University/Admin:** The authorized issuer who deploys the contract and manages credentials (issue, revoke, restore).
-- **Students:** The recipients of the credentials.
-- **Employers/Verifiers:** Third parties who use the public verification system.
-
-### Technical Layers
-
-- **Frontend Layer:** Built with React, Vite, and Vanilla CSS/TailwindCSS.
-- **Web3 Provider Layer:** MetaMask facilitates user connections and signs transactions.
-- **Blockchain Layer:** Local Hardhat/Ganache instances executing EVM bytecode.
-
-### Data Structure & Lifecycle
-The contract uses a `Credential` struct stored in a high-speed mapping: `mapping(bytes32 => Credential)`.
-1. **Non-Existent:** Hash never registered.
-2. **Active:** Hash exists and is valid (`revoked = false`).
-3. **Revoked:** Hash exists but marked invalid (`revoked = true`).
+### Infrastructure Overview
+- **Data Structure:** Uses a `Credential` struct within a mapping for high-speed retrieval.
+- **Hashing Mechanism:** Computes a Keccak-256 "digital fingerprint" for every certificate, including timestamps to prevent collisions.
+- **State Management:** Credentials exist in three states: *Non-Existent*, *Active*, or *Revoked*.
 
 ---
 
-## 5. Technologies Used
-
-- **Smart Contract:** Solidity (v0.8.20), Hardhat Framework
-- **Frontend:** React.js, Javascript
-- **Web3 Integration:** Ethers.js, MetaMask Wallet
-- **Testing:** Hardhat, Mocha, Chai
-
----
-
-## 6. Smart Contract Functions
-
-### Write Operations (Admin Only)
-- **`issueCredential(address _student, string _name, string _university, string _degree, string _field)`**
-  Computes a Keccak-256 hash (digital fingerprint) and stores metadata. Triggers `CredentialIssued`.
-- **`revokeCredential(bytes32 _credentialHash)`**
-  Updates the `revoked` flag to `true` for an existing credential. Triggers `CredentialRevoked`.
-- **`unrevokeCredential(bytes32 _credentialHash)`**
-  Restores a revoked credential to active status. Triggers `CredentialUnrevoked`.
-
-### Read Operations (Public)
-- **`getCredential(bytes32 _credentialHash)`**
-  Retrieves full individual record details including status.
-- **`verifyCredential(bytes32 _credentialHash)`**
-  Returns a simple boolean if the credential is both existent and active.
+## 3. Technologies Used
+- **Blockchain Platform:** Ethereum (Local Ganache/Hardhat)
+- **Languages:** Solidity (v0.8.20), JavaScript
+- **Frameworks:** React.js, Vite, Hardhat
+- **Web3 Integration:** Ethers.js
+- **Style:** TailwindCSS with Glassmorphism
+- **Wallet:** MetaMask
 
 ---
 
-## 7. Prerequisites
-- **Node.js:** v18.0 or newer
-- **MetaMask Extension:** Installed in Chrome/Brave browser.
+## 4. Prerequisites
+- **Node.js:** v18.0+
+- **MetaMask Extension:** Installed in your web browser.
+- **Ganache GUI:** For local blockchain stimulation.
 - **Git** to clone and manage the project repository.
-- **Hardhat/Ganache:** Local Ethereum development environment.
 
 ---
 
-## 8. User Guide & Setup
+## 5. Installation & Setup Instructions
 
-### 1. Installation
+### 1. Project Initialization
 ```bash
 git clone https://github.com/username/credential-dapp.git
 cd credential-dapp
@@ -102,117 +60,152 @@ npm install
 npx hardhat compile
 ```
 
-### 2. Local Blockchain Configuration (Ganache)
-1. Open Ganache and click **NEW WORKSPACE**.
-2. **Server Settings:** Set Hostname to `127.0.0.1` and Port to `7545`.
-3. **Network ID:** Set to `1337`.
+### 2. Local Blockchain (Ganache) Configuration
+1. Open Ganache GUI.
+2. Select **New Workspace** and set Hostname to `127.0.0.1` and Port to `7545`.
+3. Set Network ID to `1337`.
 
-![Ganache Setup](<Screenshot 2026-03-13 at 2.09.35 PM.png>)
-![Server Config](<Screenshot 2026-03-13 at 2.10.06 PM.png>)
+![Ganache Server Config](<Screenshot 2026-03-13 at 2.10.06 PM.png>)
 
-### 3. MetaMask Integration
-1. Add a Custom Network:
-   - Network Name: Ganache GUI
-   - RPC URL: `http://127.0.0.1:7545`
-   - Chain ID: `1337`
-   - Symbol: `ETH`
-2. Import accounts from Ganache using their **Private Keys**.
+### 3. MetaMask Integration (Dual Account Setup)
 
-![MetaMask Network](<Screenshot 2026-03-13 at 2.23.56 PM.png>)
-![Import Account](<Screenshot 2026-03-13 at 2.40.26 PM.png>)
+To fully test the DApp, you must import both the **University Admin** and **Student** accounts.
 
-### 4. Deployment
-Run the deployment script:
+#### A. Configure Custom Network
+Add a new network in MetaMask:
+- **Network name:** Ganache GUI
+- **New RPC URL:** `http://127.0.0.1:7545`
+- **Chain ID:** `1337`
+- **Currency symbol:** `ETH`
+
+![MetaMask Network Settings](<Screenshot 2026-03-13 at 2.23.56 PM.png>)
+
+#### B. Importing Accounts
+1. In Ganache, click the **Key Icon** for Index 0 (University Admin). Copy the Private Key.
+2. In MetaMask, select **Import Account** and paste the key.
+3. Repeat the process for Index 1 (Student Account).
+
+![Importing Account](<Screenshot 2026-03-13 at 2.43.21 PM.png>)
+![Account Dashboard](<Screenshot 2026-03-13 at 2.40.26 PM.png>)
+
+### 4. Smart Contract Deployment
 ```bash
 npx hardhat run scripts/deploy.js --network ganache
 ```
-Verify the success in Ganache (Block height should increment to 1).
+Verify that the Block Height in Ganache increments and gas is consumed from the Account 0 balance.
 
-![Deployment](<Screenshot 2026-03-13 at 2.41.17 PM.png>)
-![Ganache Audit](<Screenshot 2026-03-13 at 2.42.44 PM.png>)
-
-### 5. Launching the DApp
-Update the `contract-address.json` (or designated config) with the newly generated address, then:
-```bash
-# Generate frontend if needed
-node dapp-generator.cjs artifacts/contracts/AcademicVerification.sol/AcademicCredentials.json --address <CONTRACT_ADDRESS> --out ./simple-frontend
-
-# Launch server
-cd simple-frontend
-npx http-server -p 3000
-```
-Visit `http://localhost:3000` and connect MetaMask.
-
-![DApp Interface](<Screenshot 2026-03-13 at 2.54.02 PM.png>)
-![MetaMask Connection](<Screenshot 2026-03-13 at 2.54.14 PM.png>)
-
-### 6. Enhanced Frontend Setup (Production/Advanced)
-
-For the full-featured React application with enhanced UI/UX:
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-This will start a Vite development server (usually at `http://localhost:5173`).
+![Contract Creation Badge](<Screenshot 2026-03-13 at 2.42.56 PM.png>)
+![Blocks Tab Audit](<Screenshot 2026-03-13 at 2.41.17 PM.png>)
 
 ---
 
-## 9. Operation Workflow
+## 6. Smart Contract Functions
 
-### Issuing a Credential
-1. Fill in student details in the **issueCredential** panel.
-2. Confirm the transaction in MetaMask.
-3. Locate the `credentialHash` in the **Contract Events** log at the bottom.
+The `AcademicCredentials` contract is the core logic engine of the system.
 
-![Issue Form](<Screenshot 2026-03-13 at 2.55.30 PM.png>)
-![Success Event](<Screenshot 2026-03-13 at 2.55.56 PM.png>)
+### Core Logic & Security
+- **Collision Resistance:** By including student data and `block.timestamp` in the Keccak-256 hash, we ensure that even identical degree titles for the same student generate unique IDs.
+- **Input-Sensitivity:** Any change (e.g., "John" to "Jon") results in a completely different hash.
+- **Audit Trail:** Instead of deleting records, we toggle a `revoked` flag. This creates a permanent, immutable history on the ledger.
 
-### Verification & Revocation
-- **Verification:** Paste the hash into `verifyCredential` to check validity.
-- **Revocation:** Admin can paste the hash into `revokeCredential` to invalidate a degree.
-
-![Verify Credential](<Screenshot 2026-03-13 at 2.56.25 PM.png>)
-![Revoke Status](<Screenshot 2026-03-13 at 2.57.11 PM.png>)
+### Detailed Functionality
+- **`issueCredential` (Write)**: Admin only. Packages metadata, generates the hash, and ensures the hash hasn't been minted previously.
+- **`revokeCredential` (Update)**: Admin only. Changes the `revoked` boolean to `true`. Crucial for invalidating degrees issued in error.
+- **`unrevokeCredential` (Update)**: Admin only. Restores a degree to active status.
+- **`verifyCredential` (Read)**: Public. Checks `exists && !revoked`. Used for instant third-party validation.
+- **`getCredential` (Read)**: Public. Returns the full struct (Name, University, Degree, Field) for more detailed inspection.
 
 ---
 
-## 10. Testing Instructions
-Run automated security and logic tests:
+## 7. Testing Instructions
+
+Run the automated test suite (9 passing assertions) to verify security and logic:
 ```bash
 npx hardhat test
 ```
-The suite confirms:
-- Admin-only access control.
-- Successful issuance and hash generation.
-- Full revocation and reinstatement lifecycle.
-- Error handling for duplicate issuance or unauthorized calls.
+**Assertion Areas:**
+- **Deployment:** Proper Admin assignment.
+- **Security:** Reverting unauthorized (non-admin) issuance/revocation attempts.
+- **Lifecycle:** Validating state transitions from Issued -> Revoked -> Unrevoked.
+- **Edge cases:** Handling double-revocation or non-existent hashes.
 
 ---
 
-## 11. Known Issues & Future Improvements
+## 8. User Guide (Role-Based)
 
-### Current Limitations
-1. **On-Chain Storage Costs:** Storing raw strings is expensive on Mainnet.
-2. **Data Privacy:** PII is currently public; no ZK-proofs or encryption used yet.
-3. **Centralization:** Admin role is a single point of failure (Single-sig).
+### A. University / Admin (Issuing Degrees)
+1. **Connect:** Click "Connect MetaMask" and select the University Account.
+2. **Issue:** Navigate to the `issueCredential` panel. Enter the student's public address and academic details.
+3. **Sign:** Click "Call issueCredential()". Confirm the gas fee in the MetaMask popup.
 
-### Future Roadmap
-- **IPFS Integration:** Store heavy metadata off-chain, keeping only CIDs on-chain.
-- **Multi-Signature Admin:** Use Gnosis Safe for decentralized governance.
-- **Soulbound Tokens (SBTs):** Implement ERC-5192 for non-transferable degree NFTs.
-- **Batch Issuance:** Support CSV uploads for registrar efficiency.
+![Issuing Form](<Screenshot 2026-03-13 at 2.55.30 PM.png>)
+![MetaMask Confirmation](<Screenshot 2026-03-13 at 2.54.14 PM.png>)
+
+### B. Employers & Verifiers (Authentication)
+1. **Get Hash:** Receive the unique hexadecimal hash from the candidate.
+2. **Verify:** Paste the hash into the `verifyCredential` panel. If valid, the DApp returns `true`.
+3. **View Records:** Use `getCredential` to see the student's full verified profile.
+
+![Verification Panel](<Screenshot 2026-03-13 at 2.56.25 PM.png>)
+![Confirmed Event](<Screenshot 2026-03-13 at 2.55.43 PM.png>)
+
+### C. Auditing & Revocation
+To invalidate a credential, the admin paste the hash into the `revokeCredential` panel.
+
+![Revocation Form](<Screenshot 2026-03-13 at 2.56.58 PM.png>)
+![Revocation Audit](<Screenshot 2026-03-13 at 2.58.59 PM.png>)
+
+---
+
+## 9. Enhanced Frontend Setup (Production)
+
+For the full-featured React application with high-performance UI components and Vite-optimized bundling.
+
+### Step-by-Step Setup
+1. **Navigate to Directory:**
+   ```bash
+   cd frontend
+   ```
+2. **Install Production Deps:**
+   ```bash
+   npm install
+   ```
+3. **Configure Environment:**
+   Ensure `src/contracts/config.js` points to your local Ganache contract address and Chain ID 1337.
+4. **Launch Dev Server:**
+   ```bash
+   npm run dev
+   ```
+
+### UI Features
+- **Glassmorphism:** Aesthetic transparency effects for a premium feel.
+- **Real-time Logs:** Displays recent contract events (Issuance/Revocations) directly in the UI.
+- **Dynamic Connection:** Status indicators turn green upon successful wallet authorization.
+
+![Enhanced UI Overview](<Screenshot 2026-03-13 at 2.54.02 PM.png>)
+![Status Connection](<Screenshot 2026-03-13 at 2.54.26 PM.png>)
+
+---
+
+## 10. Known Issues & Limitations
+- **Storage Scalability:** Raw string storage on the EVM involves high gas costs (~150k gas for issuance).
+- **Public Privacy:** Metadata is currently visible to anyone, raising GDPR/PII concerns.
+- **UX Friction:** Requires manual MetaMask network configuration for local testing.
+- **Centralization:** Admin address acts as a single point of failure.
+
+---
+
+## 11. Future Improvements
+- **IPFS Integration:** Store certificate metadata off-chain to reduce gas costs.
+- **Multi-Signature Control:** Require multiple registrar signatures for revocations via Gnosis Safe.
+- **Zero-Knowledge Proofs:** Verify graduation status without revealing the student's identity.
+- **Soulbound Tokens (SBTs):** Issue degrees as non-transferable ERC-5192 tokens.
 
 ---
 
 ## 12. How to Preview this README
-Before pushing your changes to GitHub, you can preview this document to ensure formatting is correct:
-- **VS Code:** Open the file and press `Cmd + Shift + V` (macOS) or `Ctrl + Shift + V` (Windows).
-- **Online Tools:** Copy the content into [Dillinger.io](https://dillinger.io/) or [StackEdit.io](https://stackedit.io/).
-- **Extension:** Use the "Markdown Preview Enhanced" extension in VS Code for a more accurate GitHub-style render.
+- **VS Code:** Press `Cmd + Shift + V`.
+- **Online Tools:** Use [Dillinger.io](https://dillinger.io/) for a live render of this Markdown file.
 
 ---
-
-© 2026 HireMe Team. Technical documentation for Academic Credential Verification.
+© 2026 HireMe Team. Decentralized Academic Verification Documentation.
