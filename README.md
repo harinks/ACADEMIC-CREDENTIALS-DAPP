@@ -244,9 +244,6 @@ For the production-ready React app with premium visuals:
     ```
 3.  **Access:** Open `http://localhost:5173`.
 
-![Enhanced Overview](<Screenshot 2026-03-13 at 2.54.02 PM.png>)
-![Enhanced Login](<Screenshot 2026-03-13 at 2.54.26 PM.png>)
-
 ### Visual Walkthrough of the Enhanced Interface
 
 ![Dashboard Metrics](<Screenshot 2026-03-13 at 3.01.29 PM.png>)
