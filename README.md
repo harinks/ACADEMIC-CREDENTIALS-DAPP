@@ -209,6 +209,7 @@ Fill in the student's details and confirm the transaction in MetaMask.
 
 ![Issuing Form Filling](<Screenshot 2026-03-13 at 2.55.30 PM.png>)
 ![Transaction Confirmed](<Screenshot 2026-03-13 at 2.55.43 PM.png>)
+![Ganache Block 2](<Screenshot 2026-03-13 at 2.58.59 PM.png>)
 
 ### 3. Verifying & Extracting Hashes
 
@@ -219,18 +220,23 @@ Locate the `credentialHash` in the **Contract Events** panel. Use this hash in t
 
 ### 4. Revocation & Restoration
 
-Admins can revoke a hash which instantly sets `verifyCredential` to `false`. Reinstating it is equally simple via `unrevokeCredential`.
+Admins can revoke a hash which instantly sets `verifyCredential` to `false`.
 
 ![Revocation Request](<Screenshot 2026-03-13 at 2.56.58 PM.png>)
 ![Revocation Block Audit](<Screenshot 2026-03-13 at 2.57.11 PM.png>)
+![Ganache Block 3](<Screenshot 2026-03-13 at 2.59.09 PM.png>)
+
+Reinstating it is equally simple via `unrevokeCredential` to `true`.
+
 ![Unvrevoke Action](<Screenshot 2026-03-13 at 2.57.48 PM.png>)
 ![Reinstatement Confirmed](<Screenshot 2026-03-13 at 2.58.09 PM.png>)
+![Ganache Block 4](<Screenshot 2026-03-13 at 2.59.30 PM.png>)
 
 ### 5. Final Audit
 
 You can verify the exact gas consumption and transaction details in the Ganache GUI.
 
-![Ganache Audit](<Screenshot 2026-03-13 at 2.58.59 PM.png>)
+![Ganache Audit](<image-3.png)
 
 ---
 
