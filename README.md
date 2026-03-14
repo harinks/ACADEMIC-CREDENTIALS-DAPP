@@ -141,9 +141,11 @@ The `AcademicCredentials` contract is the core logic engine of the system.
 ## 7. Testing Instructions
 
 Run the automated test suite (9 passing assertions) to verify security and logic:
+
 ```bash
 npx hardhat test
 ```
+
 **Assertion Areas:**
 - **Deployment:** Proper Admin assignment.
 - **Security:** Reverting unauthorized (non-admin) issuance/revocation attempts.
@@ -156,9 +158,9 @@ npx hardhat test
 
 After deployment, update the contract address in your configuration files to sync the frontend with the blockchain.
 
-1.  **Update `contract-address.json`:** Paste the generated contract address into the `"address"` field.
-2.  **Update `app.js` (Simple Frontend):** Ensure the `CONTRACT_ADDRESS` constant in `simple-frontend/app.js` is updated.
-3.  **Update `config.js` (Enhanced Frontend):** Update `frontend/src/config.js` with the new address.
+1. **Update `contract-address.json`:** Paste the generated contract address into the `"address"` field.
+2. **Update `app.js` (Simple Frontend):** Ensure the `CONTRACT_ADDRESS` constant in `simple-frontend/app.js` is updated.
+3. **Update `config.js` (Enhanced Frontend):** Update `frontend/src/config.js` with the new address.
 
 ![Updating Configuration](<Screenshot 2026-03-13 at 2.41.58 PM.png>)
 
@@ -168,11 +170,13 @@ After deployment, update the contract address in your configuration files to syn
 
 Start a lightweight web server to interact with the DApp locally:
 
-1.  **Generate Frontend Files** (if required):
-    ```bash
-    node dapp-generator.cjs artifacts/contracts/AcademicVerification.sol/AcademicCredentials.json --address <CONTRACT_ADDRESS> --out ./simple-frontend
-    ```
-    ![Generation Command](<Screenshot 2026-03-13 at 2.51.04 PM.png>)
+1. **Generate Frontend Files** (if required):
+
+```bash
+node dapp-generator.cjs artifacts/contracts/AcademicVerification.sol/AcademicCredentials.json --address <CONTRACT_ADDRESS> --out ./simple-frontend
+```
+
+![Generation Command](<Screenshot 2026-03-13 at 2.51.04 PM.png>)
 2.  **Launch Server:**
     ```bash
     cd simple-frontend
@@ -242,6 +246,16 @@ For the production-ready React app with premium visuals:
 
 ![Enhanced Overview](<Screenshot 2026-03-13 at 2.54.02 PM.png>)
 ![Enhanced Login](<Screenshot 2026-03-13 at 2.54.26 PM.png>)
+
+### Visual Walkthrough of the Enhanced Interface
+
+![Dashboard Metrics](<Screenshot 2026-03-13 at 3.01.29 PM.png>)
+![Credential Table View](<Screenshot 2026-03-13 at 3.02.40 PM.png>)
+![Search and Filtering](<Screenshot 2026-03-13 at 3.03.08 PM.png>)
+![Verification Results State](<Screenshot 2026-03-13 at 3.03.53 PM.png>)
+![Admin Control Panel](<Screenshot 2026-03-13 at 3.04.23 PM.png>)
+![MetaMask Signing Integration](<Screenshot 2026-03-13 at 3.04.34 PM.png>)
+![Transaction Status History](<Screenshot 2026-03-13 at 3.04.51 PM.png>)
 
 ---
 
