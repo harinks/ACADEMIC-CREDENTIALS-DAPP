@@ -103,6 +103,7 @@ In MetaMask, navigate to **Settings > Networks > Add a network manually**:
 Repeat the import process for the account at **Index 1** in Ganache to act as the recipient.
 
 ![Import Second Test Account](<Screenshot 2026-03-13 at 2.52.59 PM.png>)
+![Student account is created](<Screenshot 2026-03-13 at 3.03.33 PM.png>)
 
 ### 4. Smart Contract Deployment
 
@@ -114,8 +115,8 @@ npx hardhat run scripts/deploy.js --network ganache
 
 Verify the deployment in Ganache by checking the incremented block height and the **Contract Creation** badge.
 
-![Contract Creation Audit](<Screenshot 2026-03-13 at 2.42.56 PM.png>)
-![Deployment Success Block](<Screenshot 2026-03-13 at 2.41.17 PM.png>)
+![Contract Creation Audit](<Screenshot 2026-03-13 at 2.41.17 PM.png>)
+![Deployment Success Block](<Screenshot 2026-03-13 at 2.42.56 PM.png>)
 
 ---
 
