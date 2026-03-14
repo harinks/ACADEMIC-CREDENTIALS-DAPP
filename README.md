@@ -230,13 +230,13 @@ Reinstating it is equally simple via `unrevokeCredential` to `true`.
 
 ![Unvrevoke Action](<Screenshot 2026-03-13 at 2.57.48 PM.png>)
 ![Reinstatement Confirmed](<Screenshot 2026-03-13 at 2.58.09 PM.png>)
-![Ganache Block 4](<Screenshot 2026-03-13 at 2.59.30 PM.png>)
+![Ganache Block 4](<Screenshot 2026-03-13 at 2.59.17 PM.png>)
 
 ### 5. Final Audit
 
 You can verify the exact gas consumption and transaction details in the Ganache GUI.
 
-![Ganache Audit](<image-3.png)
+![Ganache all transactions](<Screenshot 2026-03-13 at 2.59.30 PM.png>)
 
 ---
 
