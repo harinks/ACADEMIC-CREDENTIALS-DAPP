@@ -125,11 +125,13 @@ Verify the deployment in Ganache by checking the incremented block height and th
 The `AcademicCredentials` contract is the core logic engine of the system.
 
 ### Core Logic & Security
+
 - **Collision Resistance:** By including student data and `block.timestamp` in the Keccak-256 hash, we ensure that even identical degree titles for the same student generate unique IDs.
 - **Input-Sensitivity:** Any change (e.g., "John" to "Jon") results in a completely different hash.
 - **Audit Trail:** Instead of deleting records, we toggle a `revoked` flag. This creates a permanent, immutable history on the ledger.
 
 ### Detailed Functionality
+
 - **`issueCredential` (Write)**: Admin only. Packages metadata, generates the hash, and ensures the hash hasn't been minted previously.
 - **`revokeCredential` (Update)**: Admin only. Changes the `revoked` boolean to `true`. Crucial for invalidating degrees issued in error.
 - **`unrevokeCredential` (Update)**: Admin only. Restores a degree to active status.
@@ -147,6 +149,7 @@ npx hardhat test
 ```
 
 **Assertion Areas:**
+
 - **Deployment:** Proper Admin assignment.
 - **Security:** Reverting unauthorized (non-admin) issuance/revocation attempts.
 - **Lifecycle:** Validating state transitions from Issued -> Revoked -> Unrevoked.
@@ -172,18 +175,22 @@ Start a lightweight web server to interact with the DApp locally:
 
 1. **Generate Frontend Files** (if required):
 
-```bash
-node dapp-generator.cjs artifacts/contracts/AcademicVerification.sol/AcademicCredentials.json --address <CONTRACT_ADDRESS> --out ./simple-frontend
-```
+   ```bash
+   node dapp-generator.cjs artifacts/contracts/AcademicVerification.sol/AcademicCredentials.json --address <CONTRACT_ADDRESS> --out ./simple-frontend
+   ```
 
-![Generation Command](<Screenshot 2026-03-13 at 2.51.04 PM.png>)
-2.  **Launch Server:**
-    ```bash
-    cd simple-frontend
-    npx http-server -p 3000
-    ```
-    ![Server Boot](<Screenshot 2026-03-13 at 2.52.00 PM.png>)
-3.  **Access:** Open `http://localhost:3000` in your browser.
+   ![Generation Command](<Screenshot 2026-03-13 at 2.51.04 PM.png>)
+
+2. **Launch Server:**
+
+   ```bash
+   cd simple-frontend
+   npx http-server -p 3000
+   ```
+
+   ![Server Boot](<Screenshot 2026-03-13 at 2.52.00 PM.png>)
+
+3. **Access:** Open `http://localhost:3000` in your browser.
 
 ---
 
@@ -231,27 +238,45 @@ You can verify the exact gas consumption and transaction details in the Ganache 
 
 For the production-ready React app with premium visuals:
 
-1.  **Installation:**
-    ```bash
-    cd frontend
-    npm install
-    ```
-3. **Configure Environment:**
+1. **Installation:**
+
+   ```bash
+   cd frontend
+   npm install
+   ```
+
+2. **Configure Environment:**
    Ensure `src/contracts/config.js` points to your local Ganache contract address and Chain ID 1337.
-2.  **Execution:**
-    ```bash
-    npm run dev
-    ```
-3.  **Access:** Open `http://localhost:5173`.
+
+3. **Execution:**
+
+   ```bash
+   npm run dev
+   ```
+
+4. **Access:** Open `http://localhost:5173`.
 
 ### Visual Walkthrough of the Enhanced Interface
 
+- **Dashboard Metrics:** A high-level view of system analytics, including total credentials issued and active verifications.
 ![Dashboard Metrics](<Screenshot 2026-03-13 at 3.01.29 PM.png>)
+
+- **Credential Table View:** The centralized ledger displaying student records, enabling quick access and management for administrators.
 ![Credential Table View](<Screenshot 2026-03-13 at 3.02.40 PM.png>)
+
+- **Search and Filtering:** Instant search functionality allowing users to find specific student records by name, degree, or unique hash.
 ![Search and Filtering](<Screenshot 2026-03-13 at 3.03.08 PM.png>)
+
+- **Verification Results State:** The public verification portal showing a successful cryptographical check of a student's degree.
 ![Verification Results State](<Screenshot 2026-03-13 at 3.03.53 PM.png>)
+
+- **Admin Control Panel:** The restricted interface used by University officials to issue, manage, or revoke credentials securely.
 ![Admin Control Panel](<Screenshot 2026-03-13 at 3.04.23 PM.png>)
+
+- **MetaMask Signing Integration:** The standard Web3 wallet prompt required to securely sign transactions and pay block generation gas fees.
 ![MetaMask Signing Integration](<Screenshot 2026-03-13 at 3.04.34 PM.png>)
+
+- **Transaction Status History:** A real-time event log tracking successful block confirmations and network statuses directly within the UI.
 ![Transaction Status History](<Screenshot 2026-03-13 at 3.04.51 PM.png>)
 
 ---
@@ -278,4 +303,5 @@ For the production-ready React app with premium visuals:
 - **Online Tool:** [Dillinger.io](https://dillinger.io/)
 
 ---
+
 © 2026 HireMe Team. Technical Documentation.
