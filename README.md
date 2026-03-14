@@ -258,26 +258,33 @@ For the production-ready React app with premium visuals:
 
 ### Visual Walkthrough of the Enhanced Interface
 
-- **Dashboard Metrics:** A high-level view of system analytics, including total credentials issued and active verifications.
-![Dashboard Metrics](<Screenshot 2026-03-13 at 3.01.29 PM.png>)
+1. **Step 1: Landing Page & Initial Wallet Connection:** The user starts at the "VeriCred" landing page, which features a clean, professional design. The user clicks the prominent "Connect Wallet" button, and a MetaMask popup appears requesting a connection. The administrator selects the "University Account" to establish their authority.
 
-- **Credential Table View:** The centralized ledger displaying student records, enabling quick access and management for administrators.
-![Credential Table View](<Screenshot 2026-03-13 at 3.02.40 PM.png>)
+   ![Landing Page & Wallet Connection](<Screenshot 2026-03-13 at 3.01.29 PM.png>)
 
-- **Search and Filtering:** Instant search functionality allowing users to find specific student records by name, degree, or unique hash.
-![Search and Filtering](<Screenshot 2026-03-13 at 3.03.08 PM.png>)
+2. **Step 2: Dashboard Access & Role Verification:** Upon connecting, the dashboard updates to show the user's active session. A badge clearly identifies the "Role: Administrator" and displays the connected university wallet address. The user then navigates to the "University Control Center."
 
-- **Verification Results State:** The public verification portal showing a successful cryptographical check of a student's degree.
-![Verification Results State](<Screenshot 2026-03-13 at 3.03.53 PM.png>)
+   ![Dashboard Access & Role Verification](<Screenshot 2026-03-13 at 3.02.40 PM.png>)
 
-- **Admin Control Panel:** The restricted interface used by University officials to issue, manage, or revoke credentials securely.
-![Admin Control Panel](<Screenshot 2026-03-13 at 3.04.23 PM.png>)
+3. **Step 3: University Control Center – Issuing a Credential:** The administrator enters the secure management area to issue credentials. They fill out the issuance form with the student's specific data (e.g., Name: Hari, Degree: MDT in CS, and the student's unique Wallet Address). Submitting triggers a MetaMask "Confirm Transaction" prompt to sign the data onto the blockchain.
 
-- **MetaMask Signing Integration:** The standard Web3 wallet prompt required to securely sign transactions and pay block generation gas fees.
-![MetaMask Signing Integration](<Screenshot 2026-03-13 at 3.04.34 PM.png>)
+   ![University Control Center – Issuance](<Screenshot 2026-03-13 at 3.03.08 PM.png>)
 
-- **Transaction Status History:** A real-time event log tracking successful block confirmations and network statuses directly within the UI.
-![Transaction Status History](<Screenshot 2026-03-13 at 3.04.51 PM.png>)
+4. **Step 4: Real-time Ledger Update:** Once the transaction is mined, the "Global Issuance Ledger" (a centralized table of all credentials) updates in real-time. A new entry for the student appears with a status of "Active", alongside the unique cryptographic hash that serves as their permanent credential ID.
+
+   ![Real-time Ledger Update](<Screenshot 2026-03-13 at 3.03.53 PM.png>)
+
+5. **Step 5: Public Verification Portal – Entering the Hash:** An employer or verifier navigates to the "Public Verification Portal" (using a standard Student/Public Account). They paste the unique Cryptographic Hash obtained from the ledger into the search field and click "Verify Now".
+
+   ![Public Verification Portal](<Screenshot 2026-03-13 at 3.04.23 PM.png>)
+
+6. **Step 6: Verification Success – "Verified & Authentic":** The DApp queries the smart contract and instantly returns a detailed verification card confirming the Holder Identity (Hari), Issuing Institution (UOWD), and Awarded Distinction (MDT in CS) with a large green checkmark, proving the certificate's cryptographic authenticity.
+
+   ![Verification Success](<Screenshot 2026-03-13 at 3.04.34 PM.png>)
+
+7. **Step 7: QR Code Generation for Instant Sharing:** A specialized modal labeled "Scan Verify QR" generates a unique QR code linked directly to the on-chain record for the specific credential. The student can share this QR code on platforms like LinkedIn; any employer scanning it is taken directly to the blockchain verification result.
+
+   ![QR Code Generation](<Screenshot 2026-03-13 at 3.04.51 PM.png>)
 
 ---
 
