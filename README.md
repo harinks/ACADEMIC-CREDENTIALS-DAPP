@@ -19,18 +19,44 @@ The architecture is built on three pillars: **Data Integrity**, **Identity Manag
 
 ```mermaid
 graph TD;
-    A[Employer / Verifier] -->|Hash| B(VeriCred DApp UI);
-    C[University Admin] -->|Student Data| B;
-    B -->|Ethers.js / Web3.js| D[MetaMask];
-    D -->|Transactions| E[Local Hardhat Node / Ganache];
-    E --> F[AcademicCredentials Smart Contract];
+    subgraph Actors
+        A[University Admin]
+        B[Student]
+        C[Employer / Verifier]
+    end
+
+    subgraph Frontend Layer
+        UI[VeriCred React DApp]
+        WEB3[Ethers.js Library]
+    end
+
+    subgraph Web3 Wallet
+        MM[MetaMask]
+    end
+
+    subgraph Blockchain Layer
+        NODE[Ganache / Hardhat Node]
+        SC[AcademicCredentials Smart Contract]
+    end
+
+    A -->|Issues & Revokes Credentials| UI
+    B -->|Accesses & Shares QR Code| UI
+    C -->|Submits Hash for Verification| UI
+
+    UI <-->|JSON-RPC Data| WEB3
+    WEB3 -->|Requests Signature/Approval| MM
+    MM -->|Broadcasts Signed Transaction| NODE
+    NODE <-->|Reads/Writes State| SC
+    SC -.->|Emits Verification Events| WEB3
 ```
 
 ### Infrastructure Overview
 
-- **Data Structure:** Uses a `Credential` struct within a mapping for high-speed retrieval.
-- **Hashing Mechanism:** Computes a Keccak-256 "digital fingerprint" for every certificate, including timestamps to prevent collisions.
-- **State Management:** Credentials exist in three states: *Non-Existent*, *Active*, or *Revoked*.
+- **Frontend Application:** A responsive React.js based interface tailored for the varied workflows of all three user roles (Admin, Student, Verifier).
+- **Web3 Provider Integration:** Utilizes Ethers.js and MetaMask to securely manage identities, sign transactions, and interact with the blockchain ecosystem without exposing private keys.
+- **Data Structure:** Uses a `Credential` struct within an on-chain mapping for gas-efficient, highly direct retrieval of academic records.
+- **Hashing Mechanism:** Computes a unique Keccak-256 "digital fingerprint" for every certificate, inherently combining data with timestamps to prevent any hash collisions.
+- **State Management:** Credentials exist in immutable states across the ledger: *Non-Existent*, *Active*, or *Revoked*, generating a permanent and transparent audit trail.
 
 ---
 
