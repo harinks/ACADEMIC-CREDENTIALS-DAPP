@@ -5,6 +5,7 @@
 ---
 
 ## 1. Team Members
+
 - **Hariharan NKS** - 9599319
 - **Kusha Latha Azmeera** - 8884869 (Frontend Developer)
 - **Om**
@@ -26,6 +27,7 @@ graph TD;
 ```
 
 ### Infrastructure Overview
+
 - **Data Structure:** Uses a `Credential` struct within a mapping for high-speed retrieval.
 - **Hashing Mechanism:** Computes a Keccak-256 "digital fingerprint" for every certificate, including timestamps to prevent collisions.
 - **State Management:** Credentials exist in three states: *Non-Existent*, *Active*, or *Revoked*.
@@ -33,6 +35,7 @@ graph TD;
 ---
 
 ## 3. Technologies Used
+
 - **Blockchain Platform:** Ethereum (Local Ganache/Hardhat)
 - **Languages:** Solidity (v0.8.20), JavaScript
 - **Frameworks:** React.js, Vite, Hardhat
@@ -43,16 +46,18 @@ graph TD;
 ---
 
 ## 4. Prerequisites
+
 - **Node.js:** v18.0+
 - **MetaMask Extension:** Installed in your web browser.
 - **Ganache GUI:** For local blockchain stimulation.
-- **Git** to clone and manage the project repository.
+- **Git:** To clone and manage the project repository.
 
 ---
 
 ## 5. Installation & Setup Instructions
 
 ### 1. Project Initialization
+
 ```bash
 git clone https://github.com/username/credential-dapp.git
 cd credential-dapp
@@ -61,43 +66,56 @@ npx hardhat compile
 ```
 
 ### 2. Local Blockchain (Ganache) Configuration
+
 1. Open Ganache GUI.
 2. Select **New Workspace** and set Hostname to `127.0.0.1` and Port to `7545`.
 3. Set Network ID to `1337`.
 
-![Ganche Setup](<Screenshot 2026-03-13 at 2.09.35 PM.png>)
+![Ganche Initial Window](<Screenshot 2026-03-13 at 2.09.35 PM.png>)
 ![Ganache Server Config](<Screenshot 2026-03-13 at 2.10.06 PM.png>)
-![10 Testing accounts](<Screenshot 2026-03-13 at 2.40.26 PM.png>)
+![10 Pre-funded Test Accounts](<Screenshot 2026-03-13 at 2.40.26 PM.png>)
 
 ### 3. MetaMask Integration (Dual Account Setup)
 
-To fully test the DApp, you must import both the **University Admin** and **Student** accounts.
+To fully demonstrate the DApp, you must import two distinct roles from Ganache: the **University Admin** and the **Student**.
 
-#### A. Configure Custom Network
-Add a new network in MetaMask:
+#### Step A: Configure Custom Network
+
+In MetaMask, navigate to **Settings > Networks > Add a network manually**:
+
 - **Network name:** Ganache GUI
 - **New RPC URL:** `http://127.0.0.1:7545`
 - **Chain ID:** `1337`
 - **Currency symbol:** `ETH`
 
-![MetaMask Network Settings](<Screenshot 2026-03-13 at 2.23.56 PM.png>)
+![MetaMask Network Connection](<Screenshot 2026-03-13 at 2.23.56 PM.png>)
 
-#### B. Importing Accounts
-1. In Ganache, click the **Key Icon** for Index 0 (University Admin). Copy the Private Key.
-2. In MetaMask, select **Import Account** and paste the key.
-3. Repeat the process for Index 1 (Student Account).
+#### Step B: Adding the University Account (Index 0)
 
-![Importing Account](<Screenshot 2026-03-13 at 2.43.21 PM.png>)
-![Account Dashboard](<Screenshot 2026-03-13 at 2.40.26 PM.png>)
+1. In Ganache, find the account at **Index 0** and reveal the Private Key using the **Key Icon**.
+2. In MetaMask, go to **Import Account** and paste the key.
+
+![Reveal University Private Key](<Screenshot 2026-03-13 at 2.43.21 PM.png>)
+![University Account Balance](<Screenshot 2026-03-13 at 2.45.28 PM.png>)
+
+#### Step C: Adding the Student Account (Index 1)
+
+Repeat the import process for the account at **Index 1** in Ganache to act as the recipient.
+
+![Import Second Test Account](<Screenshot 2026-03-13 at 2.52.59 PM.png>)
 
 ### 4. Smart Contract Deployment
+
+Use Hardhat to deploy the `AcademicCredentials` contract:
+
 ```bash
 npx hardhat run scripts/deploy.js --network ganache
 ```
-Verify that the Block Height in Ganache increments and gas is consumed from the Account 0 balance.
 
-![Contract Creation Badge](<Screenshot 2026-03-13 at 2.42.56 PM.png>)
-![Blocks Tab Audit](<Screenshot 2026-03-13 at 2.41.17 PM.png>)
+Verify the deployment in Ganache by checking the incremented block height and the **Contract Creation** badge.
+
+![Contract Creation Audit](<Screenshot 2026-03-13 at 2.42.56 PM.png>)
+![Deployment Success Block](<Screenshot 2026-03-13 at 2.41.17 PM.png>)
 
 ---
 
@@ -133,81 +151,119 @@ npx hardhat test
 
 ---
 
-## 8. User Guide (Role-Based)
+## 8. Frontend Configuration (Contract Address Setup)
 
-### A. University / Admin (Issuing Degrees)
-1. **Connect:** Click "Connect MetaMask" and select the University Account.
-2. **Issue:** Navigate to the `issueCredential` panel. Enter the student's public address and academic details.
-3. **Sign:** Click "Call issueCredential()". Confirm the gas fee in the MetaMask popup.
+After deployment, update the contract address in your configuration files to sync the frontend with the blockchain.
 
-![Issuing Form](<Screenshot 2026-03-13 at 2.55.30 PM.png>)
-![MetaMask Confirmation](<Screenshot 2026-03-13 at 2.54.14 PM.png>)
+1.  **Update `contract-address.json`:** Paste the generated contract address into the `"address"` field.
+2.  **Update `app.js` (Simple Frontend):** Ensure the `CONTRACT_ADDRESS` constant in `simple-frontend/app.js` is updated.
+3.  **Update `config.js` (Enhanced Frontend):** Update `frontend/src/config.js` with the new address.
 
-### B. Employers & Verifiers (Authentication)
-1. **Get Hash:** Receive the unique hexadecimal hash from the candidate.
-2. **Verify:** Paste the hash into the `verifyCredential` panel. If valid, the DApp returns `true`.
-3. **View Records:** Use `getCredential` to see the student's full verified profile.
-
-![Verification Panel](<Screenshot 2026-03-13 at 2.56.25 PM.png>)
-![Confirmed Event](<Screenshot 2026-03-13 at 2.55.43 PM.png>)
-
-### C. Auditing & Revocation
-To invalidate a credential, the admin paste the hash into the `revokeCredential` panel.
-
-![Revocation Form](<Screenshot 2026-03-13 at 2.56.58 PM.png>)
-![Revocation Audit](<Screenshot 2026-03-13 at 2.58.59 PM.png>)
+![Updating Configuration](<Screenshot 2026-03-13 at 2.41.58 PM.png>)
 
 ---
 
-## 9. Enhanced Frontend Setup (Production)
+## 9. Launching the Simple Frontend
 
-For the full-featured React application with high-performance UI components and Vite-optimized bundling.
+Start a lightweight web server to interact with the DApp locally:
 
-### Step-by-Step Setup
-1. **Navigate to Directory:**
-   ```bash
-   cd frontend
-   ```
-2. **Install Production Deps:**
-   ```bash
-   npm install
-   ```
+1.  **Generate Frontend Files** (if required):
+    ```bash
+    node dapp-generator.cjs artifacts/contracts/AcademicVerification.sol/AcademicCredentials.json --address <CONTRACT_ADDRESS> --out ./simple-frontend
+    ```
+    ![Generation Command](<Screenshot 2026-03-13 at 2.51.04 PM.png>)
+2.  **Launch Server:**
+    ```bash
+    cd simple-frontend
+    npx http-server -p 3000
+    ```
+    ![Server Boot](<Screenshot 2026-03-13 at 2.52.00 PM.png>)
+3.  **Access:** Open `http://localhost:3000` in your browser.
+
+---
+
+## 10. User Guide (Detailed Walkthrough)
+
+### 1. Connecting MetaMask
+
+Authorize the connection between your wallet and the frontend.
+
+![MetaMask Login](<Screenshot 2026-03-13 at 2.54.14 PM.png>)
+![Connection Success](<Screenshot 2026-03-13 at 2.54.26 PM.png>)
+
+### 2. Issuing a Credential (University Role)
+
+Fill in the student's details and confirm the transaction in MetaMask.
+
+![Issuing Form Filling](<Screenshot 2026-03-13 at 2.55.30 PM.png>)
+![Transaction Confirmed](<Screenshot 2026-03-13 at 2.55.43 PM.png>)
+
+### 3. Verifying & Extracting Hashes
+
+Locate the `credentialHash` in the **Contract Events** panel. Use this hash in the `getCredential` or `verifyCredential` sections.
+
+![Event Log Audit](<Screenshot 2026-03-13 at 2.55.56 PM.png>)
+![Reading Data](<Screenshot 2026-03-13 at 2.56.25 PM.png>)
+
+### 4. Revocation & Restoration
+
+Admins can revoke a hash which instantly sets `verifyCredential` to `false`. Reinstating it is equally simple via `unrevokeCredential`.
+
+![Revocation Request](<Screenshot 2026-03-13 at 2.56.58 PM.png>)
+![Revocation Block Audit](<Screenshot 2026-03-13 at 2.57.11 PM.png>)
+![Unvrevoke Action](<Screenshot 2026-03-13 at 2.57.48 PM.png>)
+![Reinstatement Confirmed](<Screenshot 2026-03-13 at 2.58.09 PM.png>)
+
+### 5. Final Audit
+
+You can verify the exact gas consumption and transaction details in the Ganache GUI.
+
+![Ganache Audit](<Screenshot 2026-03-13 at 2.58.59 PM.png>)
+
+---
+
+## 11. Enhanced Frontend Setup
+
+For the production-ready React app with premium visuals:
+
+1.  **Installation:**
+    ```bash
+    cd frontend
+    npm install
+    ```
 3. **Configure Environment:**
    Ensure `src/contracts/config.js` points to your local Ganache contract address and Chain ID 1337.
-4. **Launch Dev Server:**
-   ```bash
-   npm run dev
-   ```
+2.  **Execution:**
+    ```bash
+    npm run dev
+    ```
+3.  **Access:** Open `http://localhost:5173`.
 
-### UI Features
-- **Glassmorphism:** Aesthetic transparency effects for a premium feel.
-- **Real-time Logs:** Displays recent contract events (Issuance/Revocations) directly in the UI.
-- **Dynamic Connection:** Status indicators turn green upon successful wallet authorization.
-
-![Enhanced UI Overview](<Screenshot 2026-03-13 at 2.54.02 PM.png>)
-![Status Connection](<Screenshot 2026-03-13 at 2.54.26 PM.png>)
+![Enhanced Overview](<Screenshot 2026-03-13 at 2.54.02 PM.png>)
+![Enhanced Login](<Screenshot 2026-03-13 at 2.54.26 PM.png>)
 
 ---
 
-## 10. Known Issues & Limitations
-- **Storage Scalability:** Raw string storage on the EVM involves high gas costs (~150k gas for issuance).
-- **Public Privacy:** Metadata is currently visible to anyone, raising GDPR/PII concerns.
-- **UX Friction:** Requires manual MetaMask network configuration for local testing.
-- **Centralization:** Admin address acts as a single point of failure.
+## 12. Known Issues & Limitations
+
+- **Gas Costs:** Raw string storage on EVM is computationally expensive (~151k gas for issuance).
+- **Privacy:** Metadata is currently visible to everyone on the public ledger.
+- **Centralization:** Admin role is a single point of failure for issuance.
 
 ---
 
-## 11. Future Improvements
-- **IPFS Integration:** Store certificate metadata off-chain to reduce gas costs.
-- **Multi-Signature Control:** Require multiple registrar signatures for revocations via Gnosis Safe.
-- **Zero-Knowledge Proofs:** Verify graduation status without revealing the student's identity.
-- **Soulbound Tokens (SBTs):** Issue degrees as non-transferable ERC-5192 tokens.
+## 13. Future Improvements
+
+- **IPFS Integration:** Reducing gas by storing heavy metadata off-chain.
+- **Multi-Sig Admin:** Requiring multiple approvals for revocations.
+- **Soulbound Tokens (SBTs):** Using ERC-5192 tokens for non-transferable degree proofs.
 
 ---
 
-## 12. How to Preview this README
+## 14. How to Preview this README
+
 - **VS Code:** Press `Cmd + Shift + V`.
-- **Online Tools:** Use [Dillinger.io](https://dillinger.io/) for a live render of this Markdown file.
+- **Online Tool:** [Dillinger.io](https://dillinger.io/)
 
 ---
-© 2026 HireMe Team. Decentralized Academic Verification Documentation.
+© 2026 HireMe Team. Technical Documentation.
