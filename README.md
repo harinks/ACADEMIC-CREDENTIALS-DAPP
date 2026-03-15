@@ -19,14 +19,14 @@ The architecture is built on three pillars: **Data Integrity**, **Identity Manag
 
 ```mermaid
 graph TD;
-    subgraph Actors
+    subgraph Roles
         A[University Admin]
         B[Student]
         C[Employer / Verifier]
     end
 
     subgraph Frontend Layer
-        UI[VeriCred React DApp]
+        UI[HireMe React DApp]
         WEB3[Ethers.js Library]
     end
 
@@ -52,7 +52,7 @@ graph TD;
 
 ### Infrastructure Overview
 
-- **Frontend Application:** A responsive React.js based interface tailored for the varied workflows of all three user roles (Admin, Student, Verifier).
+- **Frontend Application:** A simple frontend application using dapp-generator.js and responsive React.js based interface tailored for the varied workflows of all three user roles (Admin, Student, Verifier).
 - **Web3 Provider Integration:** Utilizes Ethers.js and MetaMask to securely manage identities, sign transactions, and interact with the blockchain ecosystem without exposing private keys.
 - **Data Structure:** Uses a `Credential` struct within an on-chain mapping for gas-efficient, highly direct retrieval of academic records.
 - **Hashing Mechanism:** Computes a unique Keccak-256 "digital fingerprint" for every certificate, inherently combining data with timestamps to prevent any hash collisions.
