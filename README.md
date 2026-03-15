@@ -7,9 +7,9 @@
 ## 1. Team Members
 
 - **Hariharan NKS** - 9599319
-- **Kusha Latha Azmeera** - 8884869 (Frontend Developer)
-- **Om**
-- **Yushen**
+- **Kusha Latha Azmeera** - 8884869
+- **Om Kurbakhelgi** - 7408249
+- **Yushen** - 
 
 ---
 
@@ -39,7 +39,7 @@ graph TD;
         SC[AcademicCredentials Smart Contract]
     end
 
-    A -->|Issues & Revokes Credentials| UI
+    A -->|Issues Revokes & UnRevokes Credentials| UI
     B -->|Accesses & Shares QR Code| UI
     C -->|Submits Hash for Verification| UI
 
