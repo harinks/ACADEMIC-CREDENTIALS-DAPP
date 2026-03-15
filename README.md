@@ -325,7 +325,7 @@ For the production-ready React app with premium visuals:
 
 ## 12. Known Issues & Limitations
 
-- **Gas Costs:** Raw string storage on EVM is computationally expensive (~151k gas for issuance).
+- **Gas Costs:** Raw string storage on EVM is computationally expensive (~146k gas for issuance).
 - **Privacy:** Metadata is currently visible to everyone on the public ledger.
 - **Centralization:** Admin role is a single point of failure for issuance.
 
