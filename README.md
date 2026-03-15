@@ -85,8 +85,8 @@ graph TD;
 ### 1. Project Initialization
 
 ```bash
-git clone https://github.com/username/credential-dapp.git
-cd credential-dapp
+git clone https://github.com/harinks/ACADEMIC-CREDENTIALS-DAPP.git
+cd ACADEMIC-CREDENTIALS-DAPP
 npm install
 npx hardhat compile
 ```
@@ -94,10 +94,10 @@ npx hardhat compile
 ### 2. Local Blockchain (Ganache) Configuration
 
 1. Open Ganache GUI.
+![Ganche Initial Window](<Screenshot 2026-03-13 at 2.09.35 PM.png>)
+
 2. Select **New Workspace** and set Hostname to `127.0.0.1` and Port to `7545`.
 3. Set Network ID to `1337`.
-
-![Ganche Initial Window](<Screenshot 2026-03-13 at 2.09.35 PM.png>)
 ![Ganache Server Config](<Screenshot 2026-03-13 at 2.10.06 PM.png>)
 ![10 Pre-funded Test Accounts](<Screenshot 2026-03-13 at 2.40.26 PM.png>)
 
@@ -138,10 +138,10 @@ Use Hardhat to deploy the `AcademicCredentials` contract:
 ```bash
 npx hardhat run scripts/deploy.js --network ganache
 ```
+![Contract Creation Audit](<Screenshot 2026-03-13 at 2.41.17 PM.png>)
 
 Verify the deployment in Ganache by checking the incremented block height and the **Contract Creation** badge.
 
-![Contract Creation Audit](<Screenshot 2026-03-13 at 2.41.17 PM.png>)
 ![Deployment Success Block](<Screenshot 2026-03-13 at 2.42.56 PM.png>)
 
 ---
@@ -174,6 +174,8 @@ Run the automated test suite (9 passing assertions) to verify security and logic
 npx hardhat test
 ```
 
+![Test Results](<WhatsApp Image 2026-03-15 at 07.21.57.jpeg>)
+
 **Assertion Areas:**
 
 - **Deployment:** Proper Admin assignment.
@@ -189,7 +191,6 @@ After deployment, update the contract address in your configuration files to syn
 
 1. **Update `contract-address.json`:** Paste the generated contract address into the `"address"` field.
 2. **Update `app.js` (Simple Frontend):** Ensure the `CONTRACT_ADDRESS` constant in `simple-frontend/app.js` is updated.
-3. **Update `config.js` (Enhanced Frontend):** Update `frontend/src/config.js` with the new address.
 
 ![Updating Configuration](<Screenshot 2026-03-13 at 2.41.58 PM.png>)
 
