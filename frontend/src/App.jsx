@@ -281,7 +281,7 @@ export default function App() {
               <ShieldCheck className="w-6 h-6 text-white" />
             </div>
             <span className="font-extrabold text-2xl tracking-tight text-slate-800">
-              Veri<span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-700 to-slate-900">Cred</span>
+              Hire<span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-700 to-slate-900">Me</span>
             </span>
           </div>
           <div className="flex items-center gap-6">
