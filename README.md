@@ -326,16 +326,18 @@ For the production-ready React app with premium visuals:
 ## 12. Known Issues & Limitations
 
 - **Gas Costs:** Raw string storage on EVM is computationally expensive (~146k gas for issuance).
-- **Privacy:** Metadata is currently visible to everyone on the public ledger.
-- **Centralization:** Admin role is a single point of failure for issuance.
+- **Privacy:** While not explicitly displayed in the basic Ganache GUI (which primarily shows transaction hashes), the metadata (like student names and degrees) is permanently stored in the contract's state on the EVM. Anyone with the contract address and ABI can publicly read this data by calling the contract's read functions or decoding the transaction logs.
+- **Centralization Risk:** The current architecture relies heavily on the `University Admin` address as a single point of failure. If the admin's private key is compromised, attackers could issue fraudulent credentials or revoke legitimate ones.
+- **Smart Contract Upgradability:** The current `AcademicCredentials` contract cannot be upgraded. If a critical bug is discovered or a feature needs to be added later, a completely new contract must be deployed, breaking the historical continuity of the previous credential ledger.
 
 ---
 
 ## 13. Future Improvements
 
-- **IPFS Integration:** Reducing gas by storing heavy metadata off-chain.
-- **Multi-Sig Admin:** Requiring multiple approvals for revocations.
-- **Soulbound Tokens (SBTs):** Using ERC-5192 tokens for non-transferable degree proofs.
+- **IPFS + Encryption Integration:** Moving heavy metadata off-chain to IPFS to significantly lower gas fees, combined with asymmetric encryption to ensure that only authorized employers can read the publicly stored IPFS files.
+- **Multi-Signature Wallets (DAO Governance):** Implementing a multi-sig contract (like a Gnosis Safe) for the admin role, requiring multiple university officials to sign off on credential issuance and revocation to prevent single-key compromise.
+- **Soulbound Tokens (SBTs):** Transitioning from simple struct mappings to utilizing ERC-5192 (Soulbound Tokens) to represent degrees as non-transferable NFTs attached specifically to the student's identity wallet.
+- **Batch Issuance:** Implementing a function in the smart contract that takes an array of student data, allowing the university to issue hundreds of credentials in a single transaction (e.g., at graduation time), saving time and bulk gas fees.
 
 ---
 
